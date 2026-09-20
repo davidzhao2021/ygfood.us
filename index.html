@@ -57,7 +57,12 @@
         .nav a:hover {
             background: #004d99;
         }
+        /* 最后一行只有2个时居中 */
         .nav a:nth-last-child(1):nth-child(3n+2) {
+            grid-column: 2;
+        }
+        /* 最后一行只有1个时居中 */
+        .nav a:nth-last-child(1):nth-child(3n+1) {
             grid-column: 2;
         }
         #backToTop {
@@ -93,44 +98,56 @@
 </head>
 <body>
     <h1>YG Food</h1>
-
     <div class="nav">
         <a href="#baoshifu">鲍师傅</a>
         <a href="#lianxing">连杏双皮奶</a>
         <a href="#maiji">麦记牛奶</a>
         <a href="#liyubai">李与白包子铺</a>
         <a href="#xijiade">喜家德水饺</a>
+        <a href="#laoshan">老陕西安美食</a>
+        <a href="#liangpiwang">凉皮王</a>
+        <a href="#xiongxiansheng">熊先生芝士蛋糕</a>
+        <a href="#ziyan">紫燕百味鸡</a>
+        <a href="#laoluoyang">老洛阳</a>
     </div>
 
     <h2 id="baoshifu">鲍师傅</h2>
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xiaobei1.jpeg" alt="libai" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xiaobei2.jpeg" alt="libai" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xiaobei3.jpeg" alt="libai" style="max-width:100%;">
-
-    <!-- 在这里继续加图片，例如：
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/baoshifu1.jpg" alt="鲍师傅菜单1">
-    -->
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xiaobei1.jpeg" alt="鲍师傅" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xiaobei2.jpeg" alt="鲍师傅" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xiaobei3.jpeg" alt="鲍师傅" style="max-width:100%;">
 
     <h2 id="lianxing">连杏双皮奶</h2>
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/shuangpinai1.png" alt="shuangpinai" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/shuangpinai2.png" alt="shuangpinai" style="max-width:100%;">
-
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/shuangpinai1.png" alt="连杏双皮奶" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/shuangpinai2.png" alt="连杏双皮奶" style="max-width:100%;">
 
     <h2 id="maiji">麦记牛奶</h2>
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/maiji1.png" alt="maiji" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/maiji2.png" alt="maiji" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/maiji3.png" alt="maiji" style="max-width:100%;">
-
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/maiji1.png" alt="麦记牛奶" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/maiji2.png" alt="麦记牛奶" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/maiji3.png" alt="麦记牛奶" style="max-width:100%;">
 
     <h2 id="liyubai">李与白包子铺</h2>
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/libai1.png" alt="libai" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/libai2.png" alt="libai" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/libai1.png" alt="李与白包子铺" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/libai2.png" alt="李与白包子铺" style="max-width:100%;">
 
     <h2 id="xijiade">喜家德水饺</h2>
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xisanxian.png" alt="xisanxian" style="max-width:100%;">
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xisanxian.png" alt="喜家德水饺" style="max-width:100%;">
+
+    <h2 id="laoshan">老陕西安美食</h2>
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/laoshan.jpg" alt="喜家德水饺" style="max-width:100%;">
+
+    <h2 id="liangpiwang">凉皮王</h2>
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/liangpiwang.jpg" alt="喜家德水饺" style="max-width:100%;">
+
+    <h2 id="xiongxiansheng">熊先生芝士蛋糕</h2>
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/mrxiong.jpg" alt="喜家德水饺" style="max-width:100%;">
+
+    <h2 id="ziyan">紫燕百味鸡</h2>
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/ziyan.jpg" alt="喜家德水饺" style="max-width:100%;">
+
+    <h2 id="laoluoyang">老洛阳</h2>
+    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/laoluoyang.jpg" alt="喜家德水饺" style="max-width:100%;">
 
     <button id="backToTop" title="回到顶部">↑</button>
-
     <script>
         const btn = document.getElementById("backToTop");
         window.onscroll = function() {
