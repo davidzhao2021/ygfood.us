@@ -33,6 +33,87 @@
             display: block;
             border-radius: 8px;
         }
+        /* ===== 菜单横向滑动相册（仅多图餐厅） ===== */
+        .carousel-wrap {
+            position: relative;
+            margin: 10px 0 26px;
+        }
+        .carousel-head {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 2px 6px;
+            font-size: 13px;
+            color: #666;
+        }
+        .carousel-count {
+            font-weight: bold;
+            color: #0066cc;
+        }
+        .menu-carousel {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 2px 2px 6px;
+        }
+        .menu-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        .menu-carousel img {
+            flex: 0 0 92%;
+            max-width: 92%;
+            margin: 0;
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: rgba(0, 102, 204, 0.85);
+            color: #fff;
+            font-size: 20px;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-btn:hover { background: rgba(0, 77, 153, 0.95); }
+        .carousel-btn.prev { left: 6px; }
+        .carousel-btn.next { right: 6px; }
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            padding-top: 4px;
+        }
+        .carousel-dots button {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            border: none;
+            background: #c8dcf5;
+            cursor: pointer;
+            padding: 0;
+        }
+        .carousel-dots button.active {
+            background: #0066cc;
+            transform: scale(1.25);
+        }
+        @media (max-width: 500px) {
+            .carousel-btn { width: 36px; height: 36px; font-size: 18px; }
+        }
         .nav {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -69,17 +150,23 @@
             position: fixed;
             bottom: 25px;
             right: 25px;
-            width: 48px;
-            height: 48px;
-            background: #0066cc;
-            color: white;
+            width: 60px;
+            height: 60px;
+            background: #ffd400;
+            color: #222;
             border: none;
             border-radius: 50%;
-            font-size: 22px;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
             display: none;
             z-index: 999;
+            transition: background 0.2s, transform 0.2s;
+        }
+        #backToTop:hover {
+            background: #ffbf00;
+            transform: scale(1.1);
         }
         @media (max-width: 500px) {
             .nav a {
@@ -89,9 +176,9 @@
             #backToTop {
                 bottom: 20px;
                 right: 18px;
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
+                width: 54px;
+                height: 54px;
+                font-size: 25px;
             }
         }
     </style>
@@ -111,13 +198,29 @@
         <a href="#ziyan">紫燕百味鸡</a>
     </div>
     <h2 id="baoshifu">鲍师傅</h2>
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao1.jpg" alt="鲍师傅" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao2.jpg" alt="鲍师傅" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao3.jpg" alt="鲍师傅" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao4.jpg" alt="鲍师傅" style="max-width:100%;">
+    <div class="carousel-wrap" data-carousel>
+        <div class="carousel-head"><span class="carousel-count">1 / 4</span></div>
+        <div class="menu-carousel">
+            <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao1.jpg" alt="鲍师傅">
+            <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao2.jpg" alt="鲍师傅">
+            <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao3.jpg" alt="鲍师傅">
+            <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao4.jpg" alt="鲍师傅">
+        </div>
+        <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
+        <div class="carousel-dots"></div>
+    </div>
     <h2 id="erhou">二猴烧鸡</h2>
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/erhou1.jpg" alt="二猴烧鸡" style="max-width:100%;">
-    <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/erhou2.jpg" alt="二猴烧鸡" style="max-width:100%;">
+    <div class="carousel-wrap" data-carousel>
+        <div class="carousel-head"><span class="carousel-count">1 / 2</span></div>
+        <div class="menu-carousel">
+            <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/erhou1.jpg" alt="二猴烧鸡">
+            <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/erhou2.jpg" alt="二猴烧鸡">
+        </div>
+        <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
+        <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
+        <div class="carousel-dots"></div>
+    </div>
     <h2 id="huaxiaoxiao">花小小</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/huaxiaoxiao.jpg" alt="花小小" style="max-width:100%;">
     <h2 id="huoshangmian">火上面</h2>
@@ -147,6 +250,58 @@
         btn.onclick = function() {
             window.scrollTo(0, 0);
         };
+    </script>
+    <script>
+        // 菜单相册：滑动 / 箭头 / 圆点 / 计数（与 YG Sports 球鞋相册同一套）
+        document.querySelectorAll("[data-carousel]").forEach(function(wrap) {
+            const track = wrap.querySelector(".menu-carousel");
+            const slides = Array.from(track.querySelectorAll("img"));
+            const count = wrap.querySelector(".carousel-count");
+            const dotsBox = wrap.querySelector(".carousel-dots");
+            const prev = wrap.querySelector(".carousel-btn.prev");
+            const next = wrap.querySelector(".carousel-btn.next");
+            let index = 0;
+
+            slides.forEach(function(_, i) {
+                const d = document.createElement("button");
+                d.type = "button";
+                d.setAttribute("aria-label", "第" + (i + 1) + "张");
+                if (i === 0) d.classList.add("active");
+                d.onclick = function() { goTo(i); };
+                dotsBox.appendChild(d);
+            });
+            const dots = Array.from(dotsBox.querySelectorAll("button"));
+
+            function stepWidth() {
+                if (slides.length < 2) return track.clientWidth;
+                return slides[1].offsetLeft - slides[0].offsetLeft;
+            }
+            function goTo(i) {
+                index = Math.max(0, Math.min(i, slides.length - 1));
+                track.scrollTo({ left: index * stepWidth(), behavior: "smooth" });
+                render();
+            }
+            function render() {
+                if (count) count.textContent = (index + 1) + " / " + slides.length;
+                dots.forEach(function(d, i) { d.classList.toggle("active", i === index); });
+                if (prev) prev.style.opacity = index === 0 ? "0.35" : "1";
+                if (next) next.style.opacity = index === slides.length - 1 ? "0.35" : "1";
+            }
+            let ticking = false;
+            track.addEventListener("scroll", function() {
+                if (ticking) return;
+                ticking = true;
+                requestAnimationFrame(function() {
+                    index = Math.round(track.scrollLeft / stepWidth());
+                    index = Math.max(0, Math.min(index, slides.length - 1));
+                    render();
+                    ticking = false;
+                });
+            }, { passive: true });
+            if (prev) prev.onclick = function() { goTo(index - 1); };
+            if (next) next.onclick = function() { goTo(index + 1); };
+            render();
+        });
     </script>
 </body>
 </html>
