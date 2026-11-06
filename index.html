@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YG Food</title>
+    <!-- ===== 浏览/点击统计（Google Analytics 4，仅店主可见） =====
+         页面上不显示任何数字。数据只进你的 GA 后台，需登录你的 Google 账号才能看，
+         访客在页面上什么都看不到。
+         已填入真实测量 ID：G-EKRVHGE077（YG Food 数据流，2026-11-05）。
+         上传 index.html 到 GitHub 后即开始统计。 -->
+    <script>
+        var GA_MEASUREMENT_ID = "G-EKRVHGE077"; // 2026-11-05 mj 的 GA4 测量 ID（YG Food 数据流）
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ window.dataLayer.push(arguments); }
+        if (/^G-[A-Z0-9]{6,}$/.test(GA_MEASUREMENT_ID)) {
+            var gaScript = document.createElement("script");
+            gaScript.async = true;
+            gaScript.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_MEASUREMENT_ID;
+            document.head.appendChild(gaScript);
+            gtag("js", new Date());
+            gtag("config", GA_MEASUREMENT_ID);
+        }
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -308,6 +326,84 @@
             if (prev) prev.onclick = function() { goTo(index - 1); };
             if (next) next.onclick = function() { goTo(index + 1); };
             render();
+        });
+    </script>
+    <script>
+        // ===== 点击统计：只发给 GA 后台，页面上不显示 =====
+        function ygTrack(eventName, params) {
+            if (!/^G-[A-Z0-9]{6,}$/.test(GA_MEASUREMENT_ID)) return; // 未填真实 ID 不发数据
+            if (typeof gtag === "function") gtag("event", eventName, params || {});
+        }
+        function restaurantOf(el) {
+            // 从元素往前找最近的 h2[id]，即所属餐厅
+            var node = el;
+            while (node) {
+                if (node.previousElementSibling && node.previousElementSibling.tagName === "H2") {
+                    return node.previousElementSibling;
+                }
+                node = node.parentElement;
+                if (node && node.tagName === "H2") return node;
+            }
+            return null;
+        }
+        // 1) 顶部导航点击：哪家餐厅被点了
+        document.querySelectorAll(".nav a").forEach(function(a) {
+            a.addEventListener("click", function() {
+                ygTrack("restaurant_nav_click", {
+                    restaurant_id: a.getAttribute("href").replace("#", ""),
+                    restaurant_name: a.textContent.trim()
+                });
+            });
+        });
+        // 2) 板块浏览：滑到哪家餐厅（每家每打开一次只记一次）
+        var seen = {};
+        if ("IntersectionObserver" in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    var id = entry.target.id;
+                    if (entry.isIntersecting && !seen[id]) {
+                        seen[id] = true;
+                        ygTrack("restaurant_view", {
+                            restaurant_id: id,
+                            restaurant_name: entry.target.textContent.trim()
+                        });
+                    }
+                });
+            }, { threshold: 0.3 });
+            document.querySelectorAll("h2[id]").forEach(function(h) { observer.observe(h); });
+        }
+        // 3) 相册箭头 / 圆点点击：哪家餐厅的第几张被翻了
+        document.querySelectorAll("[data-carousel]").forEach(function(wrap) {
+            var h = wrap.previousElementSibling;
+            var info = h ? { restaurant_id: h.id, restaurant_name: h.textContent.trim() } : {};
+            wrap.querySelectorAll(".carousel-btn.prev, .carousel-btn.next").forEach(function(btn) {
+                btn.addEventListener("click", function() {
+                    ygTrack("carousel_click", Object.assign({}, info, {
+                        direction: btn.classList.contains("prev") ? "prev" : "next"
+                    }));
+                });
+            });
+            wrap.querySelectorAll(".carousel-dots button").forEach(function(dot, i) {
+                dot.addEventListener("click", function() {
+                    ygTrack("carousel_click", Object.assign({}, info, {
+                        direction: "dot", slide_index: i + 1
+                    }));
+                });
+            });
+        });
+        // 4) 菜单图点击（放大看的那种）
+        document.querySelectorAll("body img").forEach(function(img) {
+            img.addEventListener("click", function() {
+                var h = restaurantOf(img);
+                if (h) ygTrack("menu_image_click", {
+                    restaurant_id: h.id, restaurant_name: h.textContent.trim()
+                });
+            });
+        });
+        // 5) 回到顶部点击
+        var backBtn = document.getElementById("backToTop");
+        if (backBtn) backBtn.addEventListener("click", function() {
+            ygTrack("back_to_top_click", {});
         });
     </script>
 </body>
