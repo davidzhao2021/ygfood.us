@@ -189,7 +189,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            max-height: 75vh;
+            max-height: 88vh;
             overflow-y: auto;
             background: #fff;
             border-radius: 16px 16px 0 0;
@@ -229,6 +229,22 @@
             color: #0066cc;
             font-weight: bold;
         }
+        /* 餐厅两列排，一屏放得下 */
+        .menu-popup-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        .menu-popup-list a {
+            padding: 12px 8px;
+            font-size: 15px;
+            text-align: center;
+        }
+        .menu-popup-list a:nth-child(odd) {
+            border-right: 1px solid #f0f0f0;
+        }
+        .menu-popup-list a:last-child {
+            grid-column: 1 / -1;
+        }
 
         /* 最后一行只有2个时居中 */
         .nav a:nth-last-child(1):nth-child(3n+2) {
@@ -242,13 +258,13 @@
             position: fixed;
             bottom: 25px;
             right: 25px;
-            width: 60px;
-            height: 60px;
+            height: 52px;
+            padding: 0 20px;
             background: #ffd400;
             color: #222;
             border: none;
-            border-radius: 50%;
-            font-size: 26px;
+            border-radius: 26px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
@@ -275,9 +291,9 @@
             #menuBtn {
                 bottom: 20px;
                 right: 18px;
-                width: 54px;
-                height: 54px;
-                font-size: 24px;
+                height: 48px;
+                padding: 0 16px;
+                font-size: 15px;
             }
         }
     </style>
@@ -363,7 +379,7 @@
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/zhengxin_n.jpg" alt="正新鸡排" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="ziyan">紫燕百味鸡</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/ziyan_nn.jpg" alt="紫燕百味鸡" style="max-width:100%;" loading="lazy" decoding="async">
-        <button id="menuBtn" title="全部餐厅">☰</button>
+        <button id="menuBtn" title="总菜单">总菜单</button>
     <div id="menuPopup" aria-hidden="true">
         <div class="menu-popup-sheet">
             <div class="menu-popup-head">
@@ -371,6 +387,7 @@
                 <button id="menuPopupClose" type="button" aria-label="关闭">×</button>
             </div>
             <a href="#" class="to-top">↑ 回到顶部</a>
+            <div class="menu-popup-list">
             <a href="#baoshifu">鲍师傅</a>
             <a href="#biaomei" class="new">表妹螺蛳粉</a>
             <a href="#dawei" class="new">大味</a>
@@ -386,6 +403,7 @@
             <a href="#yazhaifuren">鸭寨夫人</a>
             <a href="#zhengxin">正新鸡排</a>
             <a href="#ziyan">紫燕百味鸡</a>
+            </div>
         </div>
     </div>
     <script>
