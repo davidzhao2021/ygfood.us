@@ -264,7 +264,6 @@
         /* 餐厅纵向排列，上下滑动选择 */
         .menu-popup-list {
             display: block;
-            counter-reset: shop;
         }
         .menu-popup-list a {
             display: flex;
@@ -274,11 +273,12 @@
             text-align: left;
         }
         .menu-popup-list a::before {
-            counter-increment: shop;
-            content: counter(shop, decimal-leading-zero);
-            font-size: 12px;
-            color: #9aa5b1;
-            letter-spacing: 1px;
+            content: attr(data-letter);
+            width: 14px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #0066cc;
             margin-right: 14px;
         }
         .menu-popup-list a::after {
@@ -435,21 +435,21 @@
             </div>
             <a href="#" class="to-top">↑ 回到顶部</a>
             <div class="menu-popup-list">
-            <a href="#baoshifu">鲍师傅</a>
-            <a href="#biaomei" class="new" data-new-since="2026-11-27">表妹螺蛳粉</a>
-            <a href="#dawei" class="new" data-new-since="2026-11-27">大味</a>
-            <a href="#erhou">二猴烧鸡</a>
-            <a href="#guangfangyuan" class="new" data-new-since="2026-11-27">广芳园鸡蛋仔</a>
-            <a href="#huaxiaoxiao">花小小</a>
-            <a href="#huoshangmian">火上面</a>
-            <a href="#laoshan">老陕西安美食</a>
-            <a href="#liangpiwang">凉皮王</a>
-            <a href="#lianxing">连杏双皮奶</a>
-            <a href="#liyubai">李与白包子铺</a>
-            <a href="#xiebao" class="new" data-new-since="2026-11-27">蟹宝</a>
-            <a href="#yazhaifuren">鸭寨夫人</a>
-            <a href="#zhengxin">正新鸡排</a>
-            <a href="#ziyan">紫燕百味鸡</a>
+            <a href="#baoshifu" data-letter="B">鲍师傅</a>
+            <a href="#biaomei" data-letter="B" class="new" data-new-since="2026-11-27">表妹螺蛳粉</a>
+            <a href="#dawei" data-letter="D" class="new" data-new-since="2026-11-27">大味</a>
+            <a href="#erhou" data-letter="E">二猴烧鸡</a>
+            <a href="#guangfangyuan" data-letter="G" class="new" data-new-since="2026-11-27">广芳园鸡蛋仔</a>
+            <a href="#huaxiaoxiao" data-letter="H">花小小</a>
+            <a href="#huoshangmian" data-letter="H">火上面</a>
+            <a href="#laoshan" data-letter="L">老陕西安美食</a>
+            <a href="#liangpiwang" data-letter="L">凉皮王</a>
+            <a href="#lianxing" data-letter="L">连杏双皮奶</a>
+            <a href="#liyubai" data-letter="L">李与白包子铺</a>
+            <a href="#xiebao" data-letter="X" class="new" data-new-since="2026-11-27">蟹宝</a>
+            <a href="#yazhaifuren" data-letter="Y">鸭寨夫人</a>
+            <a href="#zhengxin" data-letter="Z">正新鸡排</a>
+            <a href="#ziyan" data-letter="Z">紫燕百味鸡</a>
             </div>
         </div>
     </div>
