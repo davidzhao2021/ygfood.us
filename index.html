@@ -150,6 +150,14 @@
         .nav a:hover {
             background: #004d99;
         }
+        /* ===== 页面最上面的接龙提示（红色） ===== */
+        .top-tip {
+            text-align: center;
+            color: #e53935;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 4px 0 0;
+        }
         /* ===== 餐厅名下方的备注行 ===== */
         .shop-note {
             text-align: center;
@@ -299,19 +307,20 @@
     </style>
 </head>
 <body>
+    <p class="top-tip">为了更方便的接龙，点击右上角 "···" 再点 "默认浏览器打开"。</p>
     <div class="nav">
         <a href="#baoshifu">鲍师傅</a>
-        <a href="#biaomei" class="new">表妹螺蛳粉</a>
-        <a href="#dawei" class="new">大味</a>
+        <a href="#biaomei" class="new" data-new-since="2026-11-27">表妹螺蛳粉</a>
+        <a href="#dawei" class="new" data-new-since="2026-11-27">大味</a>
         <a href="#erhou">二猴烧鸡</a>
-        <a href="#guangfangyuan" class="new">广芳园鸡蛋仔</a>
+        <a href="#guangfangyuan" class="new" data-new-since="2026-11-27">广芳园鸡蛋仔</a>
         <a href="#huaxiaoxiao">花小小</a>
         <a href="#huoshangmian">火上面</a>
         <a href="#laoshan">老陕西安美食</a>
         <a href="#liangpiwang">凉皮王</a>
         <a href="#lianxing">连杏双皮奶</a>
         <a href="#liyubai">李与白包子铺</a>
-        <a href="#xiebao" class="new">蟹宝</a>
+        <a href="#xiebao" class="new" data-new-since="2026-11-27">蟹宝</a>
         <a href="#yazhaifuren">鸭寨夫人</a>
         <a href="#zhengxin">正新鸡排</a>
         <a href="#ziyan">紫燕百味鸡</a>
@@ -388,17 +397,17 @@
             <a href="#" class="to-top">↑ 回到顶部</a>
             <div class="menu-popup-list">
             <a href="#baoshifu">鲍师傅</a>
-            <a href="#biaomei" class="new">表妹螺蛳粉</a>
-            <a href="#dawei" class="new">大味</a>
+            <a href="#biaomei" class="new" data-new-since="2026-11-27">表妹螺蛳粉</a>
+            <a href="#dawei" class="new" data-new-since="2026-11-27">大味</a>
             <a href="#erhou">二猴烧鸡</a>
-            <a href="#guangfangyuan" class="new">广芳园鸡蛋仔</a>
+            <a href="#guangfangyuan" class="new" data-new-since="2026-11-27">广芳园鸡蛋仔</a>
             <a href="#huaxiaoxiao">花小小</a>
             <a href="#huoshangmian">火上面</a>
             <a href="#laoshan">老陕西安美食</a>
             <a href="#liangpiwang">凉皮王</a>
             <a href="#lianxing">连杏双皮奶</a>
             <a href="#liyubai">李与白包子铺</a>
-            <a href="#xiebao" class="new">蟹宝</a>
+            <a href="#xiebao" class="new" data-new-since="2026-11-27">蟹宝</a>
             <a href="#yazhaifuren">鸭寨夫人</a>
             <a href="#zhengxin">正新鸡排</a>
             <a href="#ziyan">紫燕百味鸡</a>
@@ -571,6 +580,15 @@
                 var el = document.querySelector(target);
                 if (el) el.scrollIntoView({ behavior: "smooth" });
             });
+        });
+    </script>
+    <script>
+        // “新”徽章只保留30天：2026-11-27 加的，满30天后自动去掉
+        var NEW_DAYS = 30;
+        document.querySelectorAll("a.new[data-new-since]").forEach(function(a) {
+            var since = new Date(a.getAttribute("data-new-since") + "T00:00:00");
+            var days = (new Date() - since) / (1000 * 60 * 60 * 24);
+            if (days > NEW_DAYS) a.classList.remove("new");
         });
     </script>
 
