@@ -57,19 +57,7 @@
             position: relative;
             margin: 10px 0 26px;
         }
-        .carousel-head {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding: 0 2px 6px;
-            font-size: 13px;
-            color: #666;
-        }
-        .carousel-count {
-            font-weight: bold;
-            color: #0066cc;
-            font-size: 16px;
-        }
+
         .menu-carousel {
             display: flex;
             gap: 12px;
@@ -134,12 +122,7 @@
             background: #ffbf00;
             transform: none;
         }
-        .carousel-hint {
-            text-align: center;
-            font-size: 13px;
-            color: #666;
-            padding-top: 6px;
-        }
+
         @media (max-width: 500px) {
             .carousel-btn { width: 36px; height: 36px; font-size: 18px; }
         }
@@ -170,9 +153,25 @@
         /* ===== 餐厅名下方的备注行 ===== */
         .shop-note {
             text-align: center;
-            color: #555;
+            color: #000;
             font-size: 14px;
+            font-weight: bold;
             margin: -8px 0 4px;
+        }
+        /* ===== 导航里新餐厅名字后面的红色“新” ===== */
+        .nav a.new::after,
+        .menu-popup-sheet a.new::after {
+            content: "新";
+            display: inline-block;
+            background: #e53935;
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            line-height: 1;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin-left: 4px;
+            vertical-align: 1px;
         }
         /* ===== 右下角菜单按钮弹出的全部餐厅 ===== */
         #menuPopup {
@@ -287,24 +286,23 @@
     <h1>YG Food</h1>
     <div class="nav">
         <a href="#baoshifu">鲍师傅</a>
-        <a href="#biaomei">表妹螺蛳粉</a>
-        <a href="#dawei">大味</a>
+        <a href="#biaomei" class="new">表妹螺蛳粉</a>
+        <a href="#dawei" class="new">大味</a>
         <a href="#erhou">二猴烧鸡</a>
-        <a href="#guangfangyuan">广芳园鸡蛋仔</a>
+        <a href="#guangfangyuan" class="new">广芳园鸡蛋仔</a>
         <a href="#huaxiaoxiao">花小小</a>
         <a href="#huoshangmian">火上面</a>
         <a href="#laoshan">老陕西安美食</a>
         <a href="#liangpiwang">凉皮王</a>
         <a href="#lianxing">连杏双皮奶</a>
         <a href="#liyubai">李与白包子铺</a>
-        <a href="#xiebao">蟹宝</a>
+        <a href="#xiebao" class="new">蟹宝</a>
         <a href="#yazhaifuren">鸭寨夫人</a>
         <a href="#zhengxin">正新鸡排</a>
         <a href="#ziyan">紫燕百味鸡</a>
     </div>
     <h2 id="baoshifu">鲍师傅</h2>
     <div class="carousel-wrap" data-carousel>
-        <div class="carousel-head"><span class="carousel-count">1 / 4</span></div>
         <div class="menu-carousel">
             <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao1.jpg" alt="鲍师傅" loading="lazy" decoding="async">
             <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/bao2.jpg" alt="鲍师傅" loading="lazy" decoding="async">
@@ -314,17 +312,15 @@
         <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
         <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
         <div class="carousel-dots"></div>
-        <div class="carousel-hint">← 左右滑动查看更多菜单 →</div>
     </div>
     <h2 id="biaomei">表妹螺蛳粉</h2>
-    <p class="shop-note">粉和料是分开装，回家煮。</p>
+    <p class="shop-note">粉和料可以分开装，回家自己煮。</p>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/biaomei.jpg" alt="表妹螺蛳粉" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="dawei">大味</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/dawei.jpg" alt="大味" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="erhou">二猴烧鸡</h2>
     <p class="shop-note">真空包装。</p>
     <div class="carousel-wrap" data-carousel>
-        <div class="carousel-head"><span class="carousel-count">1 / 2</span></div>
         <div class="menu-carousel">
             <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/erhou1_n.jpg" alt="二猴烧鸡" loading="lazy" decoding="async">
             <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/erhou2_n.jpg" alt="二猴烧鸡" loading="lazy" decoding="async">
@@ -332,11 +328,9 @@
         <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
         <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
         <div class="carousel-dots"></div>
-        <div class="carousel-hint">← 左右滑动查看更多菜单 →</div>
     </div>
     <h2 id="guangfangyuan">广芳园鸡蛋仔</h2>
     <div class="carousel-wrap" data-carousel>
-        <div class="carousel-head"><span class="carousel-count">1 / 3</span></div>
         <div class="menu-carousel">
             <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/jidanzai1.jpg" alt="广芳园鸡蛋仔" loading="lazy" decoding="async">
             <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/jidanzai2.jpg" alt="广芳园鸡蛋仔" loading="lazy" decoding="async">
@@ -345,7 +339,6 @@
         <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
         <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
         <div class="carousel-dots"></div>
-        <div class="carousel-hint">← 左右滑动查看更多菜单 →</div>
     </div>
     <h2 id="huaxiaoxiao">花小小</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/huaxiaoxiao.jpg" alt="花小小" style="max-width:100%;" loading="lazy" decoding="async">
@@ -379,17 +372,17 @@
             </div>
             <a href="#" class="to-top">↑ 回到顶部</a>
             <a href="#baoshifu">鲍师傅</a>
-            <a href="#biaomei">表妹螺蛳粉</a>
-            <a href="#dawei">大味</a>
+            <a href="#biaomei" class="new">表妹螺蛳粉</a>
+            <a href="#dawei" class="new">大味</a>
             <a href="#erhou">二猴烧鸡</a>
-            <a href="#guangfangyuan">广芳园鸡蛋仔</a>
+            <a href="#guangfangyuan" class="new">广芳园鸡蛋仔</a>
             <a href="#huaxiaoxiao">花小小</a>
             <a href="#huoshangmian">火上面</a>
             <a href="#laoshan">老陕西安美食</a>
             <a href="#liangpiwang">凉皮王</a>
             <a href="#lianxing">连杏双皮奶</a>
             <a href="#liyubai">李与白包子铺</a>
-            <a href="#xiebao">蟹宝</a>
+            <a href="#xiebao" class="new">蟹宝</a>
             <a href="#yazhaifuren">鸭寨夫人</a>
             <a href="#zhengxin">正新鸡排</a>
             <a href="#ziyan">紫燕百味鸡</a>
@@ -410,7 +403,6 @@
         document.querySelectorAll("[data-carousel]").forEach(function(wrap) {
             const track = wrap.querySelector(".menu-carousel");
             const slides = Array.from(track.querySelectorAll("img"));
-            const count = wrap.querySelector(".carousel-count");
             const dotsBox = wrap.querySelector(".carousel-dots");
             const prev = wrap.querySelector(".carousel-btn.prev");
             const next = wrap.querySelector(".carousel-btn.next");
@@ -436,7 +428,6 @@
                 render();
             }
             function render() {
-                if (count) count.textContent = (index + 1) + " / " + slides.length;
                 dots.forEach(function(d, i) { d.classList.toggle("active", i === index); });
                 if (prev) prev.style.opacity = index === 0 ? "0.35" : "1";
                 if (next) next.style.opacity = index === slides.length - 1 ? "0.35" : "1";
