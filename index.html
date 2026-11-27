@@ -162,6 +162,13 @@
             background: #ffbf00;
             color: #222;
         }
+        /* ===== 餐厅名下方的备注行 ===== */
+        .shop-note {
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+            margin: -8px 0 4px;
+        }
         /* ===== 吸顶快捷导航（往下翻菜单时留在屏幕上方） ===== */
         .sticky-nav {
             position: sticky;
@@ -193,45 +200,7 @@
         body.show-sticky .sticky-nav {
             display: flex;
         }
-        /* ===== 点图放大 ===== */
-        #lightbox {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.92);
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
-        }
-        #lightbox.open {
-            display: flex;
-        }
-        .lightbox-bar {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            padding: 12px;
-        }
-        .lightbox-bar button {
-            width: 44px;
-            height: 44px;
-            border: none;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            font-size: 22px;
-            line-height: 1;
-            cursor: pointer;
-        }
-        .lightbox-scroll {
-            flex: 1;
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        #lightboxImg {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
+
         /* 最后一行只有2个时居中 */
         .nav a:nth-last-child(1):nth-child(3n+2) {
             grid-column: 2;
@@ -337,10 +306,12 @@
         <div class="carousel-dots"></div>
     </div>
     <h2 id="biaomei">表妹螺蛳粉</h2>
+    <p class="shop-note">粉和料可以分开装，回家自己煮。</p>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/biaomei.jpg" alt="表妹螺蛳粉" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="dawei">大味</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/dawei.jpg" alt="大味" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="erhou">二猴烧鸡</h2>
+    <p class="shop-note">真空包装。</p>
     <div class="carousel-wrap" data-carousel>
         <div class="carousel-head"><span class="carousel-count">1 / 2</span></div>
         <div class="menu-carousel">
@@ -374,24 +345,19 @@
     <h2 id="lianxing">连杏双皮奶</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/shuangpinai.jpg" alt="连杏双皮奶" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="liyubai">李与白包子铺</h2>
+    <p class="shop-note">包子都是冷藏的，需回家加热。</p>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/libai_n.jpg" alt="李与白包子铺" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="xiebao">蟹宝</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/xiebao.jpg" alt="蟹宝" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="yazhaifuren">鸭寨夫人</h2>
+    <p class="shop-note">真空包装。</p>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/yazhai_n.jpg" alt="鸭寨夫人" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="zhengxin">正新鸡排</h2>
+    <p class="shop-note">鸡排未切，锁住水份，回家空气炸锅/微波炉即可。</p>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/zhengxin_n.jpg" alt="正新鸡排" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="ziyan">紫燕百味鸡</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/ziyan_nn.jpg" alt="紫燕百味鸡" style="max-width:100%;" loading="lazy" decoding="async">
         <button id="backToTop" title="回到顶部">↑</button>
-    <div id="lightbox" aria-hidden="true">
-        <div class="lightbox-bar">
-            <button id="lightboxZoomOut" type="button" aria-label="缩小">−</button>
-            <button id="lightboxZoomIn" type="button" aria-label="放大">＋</button>
-            <button id="lightboxClose" type="button" aria-label="关闭">×</button>
-        </div>
-        <div class="lightbox-scroll"><img id="lightboxImg" src="" alt=""></div>
-    </div>
     <script>
         const btn = document.getElementById("backToTop");
         window.onscroll = function() {
@@ -463,17 +429,22 @@
             if (!/^G-[A-Z0-9]{6,}$/.test(GA_MEASUREMENT_ID)) return; // 未填真实 ID 不发数据
             if (typeof gtag === "function") gtag("event", eventName, params || {});
         }
-        function restaurantOf(el) {
-            // 从元素往前找最近的 h2[id]，即所属餐厅
+        function prevHeading(el) {
+            // 从元素往前找最近的 h2，即所属餐厅（中间可能隔着备注行等）
             var node = el;
             while (node) {
-                if (node.previousElementSibling && node.previousElementSibling.tagName === "H2") {
-                    return node.previousElementSibling;
+                var sib = node.previousElementSibling;
+                while (sib) {
+                    if (sib.tagName === "H2") return sib;
+                    sib = sib.previousElementSibling;
                 }
                 node = node.parentElement;
                 if (node && node.tagName === "H2") return node;
             }
             return null;
+        }
+        function restaurantOf(el) {
+            return prevHeading(el);
         }
         // 1) 顶部导航点击：哪家餐厅被点了
         document.querySelectorAll(".nav a, .sticky-nav a").forEach(function(a) {
@@ -503,7 +474,7 @@
         }
         // 3) 相册箭头 / 圆点点击：哪家餐厅的第几张被翻了
         document.querySelectorAll("[data-carousel]").forEach(function(wrap) {
-            var h = wrap.previousElementSibling;
+            var h = prevHeading(wrap);
             var info = h ? { restaurant_id: h.id, restaurant_name: h.textContent.trim() } : {};
             wrap.querySelectorAll(".carousel-btn.prev, .carousel-btn.next").forEach(function(btn) {
                 btn.addEventListener("click", function() {
@@ -539,6 +510,7 @@
         // ===== 吸顶快捷导航 + 当前餐厅高亮 =====
         var mainNav = document.querySelector(".nav");
         var headings = Array.prototype.slice.call(document.querySelectorAll("h2[id]"));
+        var lastActiveId = "";
         function onScrollNav() {
             var past = window.scrollY > (mainNav.offsetTop + mainNav.offsetHeight);
             document.body.classList.toggle("show-sticky", past);
@@ -550,6 +522,12 @@
             document.querySelectorAll(".nav a, .sticky-nav a").forEach(function(a) {
                 a.classList.toggle("active", a.getAttribute("href") === "#" + id);
             });
+            // 换一家餐厅时，把吸顶导航里对应的店名滑动到中间
+            if (id && id !== lastActiveId) {
+                lastActiveId = id;
+                var activeSticky = document.querySelector('.sticky-nav a[href="#' + id + '"]');
+                if (activeSticky) activeSticky.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            }
         }
         var navTicking = false;
         window.addEventListener("scroll", function() {
@@ -559,34 +537,6 @@
         }, { passive: true });
         onScrollNav();
     </script>
-    <script>
-        // ===== 点图放大：点菜单图全屏看，＋/－缩放，× 或 Esc 关闭 =====
-        var lightbox = document.getElementById("lightbox");
-        var lightboxImg = document.getElementById("lightboxImg");
-        var zoom = 100;
-        function setZoom(z) {
-            zoom = Math.max(100, Math.min(300, z));
-            lightboxImg.style.width = zoom + "%";
-        }
-        document.querySelectorAll("body img:not(#lightboxImg)").forEach(function(img) {
-            img.addEventListener("click", function() {
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt || "";
-                setZoom(100);
-                lightbox.classList.add("open");
-                document.body.style.overflow = "hidden";
-            });
-        });
-        function closeLightbox() {
-            lightbox.classList.remove("open");
-            document.body.style.overflow = "";
-            lightboxImg.src = "";
-        }
-        document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
-        document.getElementById("lightboxZoomIn").addEventListener("click", function() { setZoom(zoom + 50); });
-        document.getElementById("lightboxZoomOut").addEventListener("click", function() { setZoom(zoom - 50); });
-        lightbox.addEventListener("click", function(e) { if (e.target === lightbox) closeLightbox(); });
-        document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeLightbox(); });
-    </script>
+
 </body>
 </html>
