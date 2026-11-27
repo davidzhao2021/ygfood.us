@@ -43,7 +43,7 @@
             margin-top: 50px;
             padding-top: 20px;
             border-top: 1px solid #eee;
-            scroll-margin-top: 64px;
+            scroll-margin-top: 12px;
         }
         img {
             max-width: 100%;
@@ -68,6 +68,7 @@
         .carousel-count {
             font-weight: bold;
             color: #0066cc;
+            font-size: 16px;
         }
         .menu-carousel {
             display: flex;
@@ -114,21 +115,30 @@
         .carousel-dots {
             display: flex;
             justify-content: center;
-            gap: 7px;
-            padding-top: 4px;
+            gap: 12px;
+            padding-top: 8px;
         }
         .carousel-dots button {
-            width: 9px;
-            height: 9px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
             border: none;
-            background: #c8dcf5;
+            background: #8ab4e8;
             cursor: pointer;
             padding: 0;
+            transition: width 0.2s, background 0.2s;
         }
         .carousel-dots button.active {
-            background: #0066cc;
-            transform: scale(1.25);
+            width: 30px;
+            border-radius: 8px;
+            background: #ffbf00;
+            transform: none;
+        }
+        .carousel-hint {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            padding-top: 6px;
         }
         @media (max-width: 500px) {
             .carousel-btn { width: 36px; height: 36px; font-size: 18px; }
@@ -157,11 +167,6 @@
         .nav a:hover {
             background: #004d99;
         }
-        .nav a.active,
-        .sticky-nav a.active {
-            background: #ffbf00;
-            color: #222;
-        }
         /* ===== 餐厅名下方的备注行 ===== */
         .shop-note {
             text-align: center;
@@ -169,36 +174,61 @@
             font-size: 14px;
             margin: -8px 0 4px;
         }
-        /* ===== 吸顶快捷导航（往下翻菜单时留在屏幕上方） ===== */
-        .sticky-nav {
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        /* ===== 右下角菜单按钮弹出的全部餐厅 ===== */
+        #menuPopup {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
             display: none;
-            gap: 8px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            padding: 8px 10px;
-            margin: 0 -15px;
-            background: #f5f9ff;
-            border-bottom: 1px solid #d0e3ff;
+        }
+        #menuPopup.open {
+            display: block;
+        }
+        .menu-popup-sheet {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            max-height: 75vh;
+            overflow-y: auto;
+            background: #fff;
+            border-radius: 16px 16px 0 0;
+            padding: 8px 0 calc(12px + env(safe-area-inset-bottom));
             -webkit-overflow-scrolling: touch;
         }
-        .sticky-nav::-webkit-scrollbar {
-            display: none;
-        }
-        .sticky-nav a {
-            flex: 0 0 auto;
-            padding: 7px 14px;
-            background: #0066cc;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 20px;
-            font-size: 13px;
-            white-space: nowrap;
-        }
-        body.show-sticky .sticky-nav {
+        .menu-popup-head {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 18px;
+            font-size: 17px;
+            font-weight: bold;
+            color: #0066cc;
+            border-bottom: 1px solid #eee;
+        }
+        .menu-popup-head button {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: #f0f0f0;
+            color: #333;
+            font-size: 22px;
+            line-height: 1;
+            cursor: pointer;
+        }
+        .menu-popup-sheet a {
+            display: block;
+            padding: 14px 18px;
+            font-size: 16px;
+            color: #222;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .menu-popup-sheet a.to-top {
+            color: #0066cc;
+            font-weight: bold;
         }
 
         /* 最后一行只有2个时居中 */
@@ -209,7 +239,7 @@
         .nav a:nth-last-child(1):nth-child(3n+1) {
             grid-column: 2;
         }
-        #backToTop {
+        #menuBtn {
             position: fixed;
             bottom: 25px;
             right: 25px;
@@ -219,7 +249,7 @@
             color: #222;
             border: none;
             border-radius: 50%;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
@@ -227,7 +257,7 @@
             z-index: 999;
             transition: background 0.2s, transform 0.2s;
         }
-        #backToTop:hover {
+        #menuBtn:hover {
             background: #ffbf00;
             transform: scale(1.1);
         }
@@ -243,15 +273,12 @@
                 font-size: 13px;
                 padding: 8px 4px;
             }
-            #backToTop {
+            #menuBtn {
                 bottom: 20px;
                 right: 18px;
                 width: 54px;
                 height: 54px;
-                font-size: 25px;
-            }
-            .sticky-nav {
-                margin: 0 -4px;
+                font-size: 24px;
             }
         }
     </style>
@@ -259,23 +286,6 @@
 <body>
     <h1>YG Food</h1>
     <div class="nav">
-        <a href="#baoshifu">鲍师傅</a>
-        <a href="#biaomei">表妹螺蛳粉</a>
-        <a href="#dawei">大味</a>
-        <a href="#erhou">二猴烧鸡</a>
-        <a href="#guangfangyuan">广芳园鸡蛋仔</a>
-        <a href="#huaxiaoxiao">花小小</a>
-        <a href="#huoshangmian">火上面</a>
-        <a href="#laoshan">老陕西安美食</a>
-        <a href="#liangpiwang">凉皮王</a>
-        <a href="#lianxing">连杏双皮奶</a>
-        <a href="#liyubai">李与白包子铺</a>
-        <a href="#xiebao">蟹宝</a>
-        <a href="#yazhaifuren">鸭寨夫人</a>
-        <a href="#zhengxin">正新鸡排</a>
-        <a href="#ziyan">紫燕百味鸡</a>
-    </div>
-    <div class="sticky-nav" id="stickyNav">
         <a href="#baoshifu">鲍师傅</a>
         <a href="#biaomei">表妹螺蛳粉</a>
         <a href="#dawei">大味</a>
@@ -304,9 +314,10 @@
         <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
         <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
         <div class="carousel-dots"></div>
+        <div class="carousel-hint">← 左右滑动查看更多菜单 →</div>
     </div>
     <h2 id="biaomei">表妹螺蛳粉</h2>
-    <p class="shop-note">粉和料可以分开装，回家自己煮。</p>
+    <p class="shop-note">粉和料是分开装，回家煮。</p>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/biaomei.jpg" alt="表妹螺蛳粉" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="dawei">大味</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/dawei.jpg" alt="大味" style="max-width:100%;" loading="lazy" decoding="async">
@@ -321,6 +332,7 @@
         <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
         <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
         <div class="carousel-dots"></div>
+        <div class="carousel-hint">← 左右滑动查看更多菜单 →</div>
     </div>
     <h2 id="guangfangyuan">广芳园鸡蛋仔</h2>
     <div class="carousel-wrap" data-carousel>
@@ -333,6 +345,7 @@
         <button class="carousel-btn prev" type="button" aria-label="上一张">‹</button>
         <button class="carousel-btn next" type="button" aria-label="下一张">›</button>
         <div class="carousel-dots"></div>
+        <div class="carousel-hint">← 左右滑动查看更多菜单 →</div>
     </div>
     <h2 id="huaxiaoxiao">花小小</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/huaxiaoxiao.jpg" alt="花小小" style="max-width:100%;" loading="lazy" decoding="async">
@@ -357,18 +370,39 @@
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/zhengxin_n.jpg" alt="正新鸡排" style="max-width:100%;" loading="lazy" decoding="async">
     <h2 id="ziyan">紫燕百味鸡</h2>
     <img src="https://raw.githubusercontent.com/davidzhao2021/ygfood.us/main/ziyan_nn.jpg" alt="紫燕百味鸡" style="max-width:100%;" loading="lazy" decoding="async">
-        <button id="backToTop" title="回到顶部">↑</button>
+        <button id="menuBtn" title="全部餐厅">☰</button>
+    <div id="menuPopup" aria-hidden="true">
+        <div class="menu-popup-sheet">
+            <div class="menu-popup-head">
+                <span>全部餐厅</span>
+                <button id="menuPopupClose" type="button" aria-label="关闭">×</button>
+            </div>
+            <a href="#" class="to-top">↑ 回到顶部</a>
+            <a href="#baoshifu">鲍师傅</a>
+            <a href="#biaomei">表妹螺蛳粉</a>
+            <a href="#dawei">大味</a>
+            <a href="#erhou">二猴烧鸡</a>
+            <a href="#guangfangyuan">广芳园鸡蛋仔</a>
+            <a href="#huaxiaoxiao">花小小</a>
+            <a href="#huoshangmian">火上面</a>
+            <a href="#laoshan">老陕西安美食</a>
+            <a href="#liangpiwang">凉皮王</a>
+            <a href="#lianxing">连杏双皮奶</a>
+            <a href="#liyubai">李与白包子铺</a>
+            <a href="#xiebao">蟹宝</a>
+            <a href="#yazhaifuren">鸭寨夫人</a>
+            <a href="#zhengxin">正新鸡排</a>
+            <a href="#ziyan">紫燕百味鸡</a>
+        </div>
+    </div>
     <script>
-        const btn = document.getElementById("backToTop");
+        const menuBtn = document.getElementById("menuBtn");
         window.onscroll = function() {
             if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-                btn.style.display = "block";
+                menuBtn.style.display = "block";
             } else {
-                btn.style.display = "none";
+                menuBtn.style.display = "none";
             }
-        };
-        btn.onclick = function() {
-            window.scrollTo(0, 0);
         };
     </script>
     <script>
@@ -447,7 +481,7 @@
             return prevHeading(el);
         }
         // 1) 顶部导航点击：哪家餐厅被点了
-        document.querySelectorAll(".nav a, .sticky-nav a").forEach(function(a) {
+        document.querySelectorAll(".nav a, .menu-popup-sheet a:not(.to-top)").forEach(function(a) {
             a.addEventListener("click", function() {
                 ygTrack("restaurant_nav_click", {
                     restaurant_id: a.getAttribute("href").replace("#", ""),
@@ -500,42 +534,36 @@
                 });
             });
         });
-        // 5) 回到顶部点击
-        var backBtn = document.getElementById("backToTop");
-        if (backBtn) backBtn.addEventListener("click", function() {
-            ygTrack("back_to_top_click", {});
-        });
     </script>
     <script>
-        // ===== 吸顶快捷导航 + 当前餐厅高亮 =====
-        var mainNav = document.querySelector(".nav");
-        var headings = Array.prototype.slice.call(document.querySelectorAll("h2[id]"));
-        var lastActiveId = "";
-        function onScrollNav() {
-            var past = window.scrollY > (mainNav.offsetTop + mainNav.offsetHeight);
-            document.body.classList.toggle("show-sticky", past);
-            var current = headings[0];
-            for (var i = 0; i < headings.length; i++) {
-                if (headings[i].getBoundingClientRect().top <= 90) current = headings[i];
-            }
-            var id = current ? current.id : "";
-            document.querySelectorAll(".nav a, .sticky-nav a").forEach(function(a) {
-                a.classList.toggle("active", a.getAttribute("href") === "#" + id);
-            });
-            // 换一家餐厅时，把吸顶导航里对应的店名滑动到中间
-            if (id && id !== lastActiveId) {
-                lastActiveId = id;
-                var activeSticky = document.querySelector('.sticky-nav a[href="#' + id + '"]');
-                if (activeSticky) activeSticky.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-            }
+        // ===== 右下角菜单按钮：点开全部餐厅，点一家直接跳过去 =====
+        var menuPopup = document.getElementById("menuPopup");
+        function openMenu() {
+            menuPopup.classList.add("open");
+            document.body.style.overflow = "hidden";
+            ygTrack("menu_button_click", {});
         }
-        var navTicking = false;
-        window.addEventListener("scroll", function() {
-            if (navTicking) return;
-            navTicking = true;
-            requestAnimationFrame(function() { onScrollNav(); navTicking = false; });
-        }, { passive: true });
-        onScrollNav();
+        function closeMenu() {
+            menuPopup.classList.remove("open");
+            document.body.style.overflow = "";
+        }
+        menuBtn.addEventListener("click", openMenu);
+        document.getElementById("menuPopupClose").addEventListener("click", closeMenu);
+        menuPopup.addEventListener("click", function(e) { if (e.target === menuPopup) closeMenu(); });
+        document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeMenu(); });
+        menuPopup.querySelectorAll("a").forEach(function(a) {
+            a.addEventListener("click", function(e) {
+                e.preventDefault();
+                var target = a.getAttribute("href");
+                closeMenu();
+                if (target === "#") {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    return;
+                }
+                var el = document.querySelector(target);
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+            });
+        });
     </script>
 
 </body>
